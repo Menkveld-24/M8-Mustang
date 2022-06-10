@@ -7,10 +7,10 @@ CRGBArray<NUM_LEDS> leds;
 byte color = 100;
 byte dim = 255;
 byte trans = 100;
-byte saturation = 200;
+byte saturation = 0;
 byte val;
 void setup() {
-   Serial.begin(9600);
+  Serial.begin(9600);
   FastLED.addLeds<NEOPIXEL, LED_PIN>(leds, NUM_LEDS);
 
 }
