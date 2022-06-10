@@ -4,7 +4,7 @@
 #define NUM_LEDS    90
 
 CRGBArray<NUM_LEDS> leds;
-byte color = 255;
+byte color = 300;
 byte dim = 255;
 byte trans = 100;
 byte saturation = 0;
