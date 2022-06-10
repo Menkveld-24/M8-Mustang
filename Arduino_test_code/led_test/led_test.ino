@@ -4,9 +4,9 @@
 #define NUM_LEDS    90
 
 CRGBArray<NUM_LEDS> leds;
-byte color = 300;
-byte dim = 255;
-byte trans = 100;
+byte color = 0; // white
+byte dim = 255; // no dim for the chosen one
+byte trans = 100; // for the leds beside the chosen led 
 byte saturation = 0;
 byte val;
 void setup() {
