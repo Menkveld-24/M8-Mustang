@@ -6,11 +6,11 @@
 CRGBArray<NUM_LEDS> leds;
 byte color = 100;
 byte dim = 255;
-byte trans = 100
+byte trans = 100;
 byte saturation = 200;
 byte val;
 void setup() {
-  //  Serial.begin(9600);
+   Serial.begin(9600);
   FastLED.addLeds<NEOPIXEL, LED_PIN>(leds, NUM_LEDS);
 
 }
@@ -203,19 +203,3 @@ void loop() {
       }
   }
 }
-
-  //  for (int i = 0; i <= 9; i += 3) {
-  //    leds[i] = CHSV(color + i * 20, saturation, trans);
-  //    leds[i + 1] = CHSV(color + i * 20, saturation, trans);
-  //    leds[i + 2] = CHSV(color + i * 20, saturation, trans);
-  //    FastLED.show();
-  //    delay(50);
-  //  }
-  //
-  //
-  //  for (int i = 9; i >= 0; i -= 2) {
-  //    leds[i] = CHSV(color - i * 20, saturation, trans);
-  //    leds[i - 1] = CRGB :: Black;
-  //    FastLED.show();
-  //    delay(50);
-  //  }
