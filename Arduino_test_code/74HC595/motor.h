@@ -13,9 +13,12 @@ class Motor{
     void update(unsigned long currentTime);
     void setRotation(int rot);
     bool getCurrentStep(int pos);
+    bool isIdle();
 
   private:
     int motorID;
+    bool rotateClockWise = true;
+    // delay to wait between steps
     static const unsigned long stepDelay = 60L * 1000L * 1000L / STEPCOUNT / RPM;
 
 // * Step C0 C1 C2 C3
@@ -29,8 +32,11 @@ class Motor{
         {false, false, true, true},
         {true, false, false, true}
     };
+    // the current step we are at
     int currentStep = 0;
+    // timestamp of last step taken
     unsigned long lastStep = 0;
+    // steps left to step
     int stepsLeft = 0;
 };
 

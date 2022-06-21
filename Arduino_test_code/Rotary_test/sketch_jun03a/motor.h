@@ -18,6 +18,7 @@ class Motor{
     unsigned long stepDelay;
     unsigned long lastStep;
     int stepsLeft = 0;
+    bool rotateClockWise = true;
 
     int motorPin1;
     int motorPin2;

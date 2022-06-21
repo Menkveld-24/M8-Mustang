@@ -3,18 +3,16 @@
 #include "Arduino.h"
 
 MotorController::MotorController(){
-    Serial.println("motor init");
-
-    //set pins to output so you can control the shift register
-    pinMode(17, OUTPUT);
-    pinMode(16, OUTPUT);
-    pinMode(4, OUTPUT);
+    // Setting the shift register pins
+    pinMode(MotorController::latchPin, OUTPUT);
+    pinMode(MotorController::clockPin, OUTPUT);
+    pinMode(MotorController::dataPin, OUTPUT);
 
     for(int i = 0; i < MotorController::motorCount; i++){
-        // this->motors[]
-        Serial.print("New motor");
-        this->motors[i].setRotation(500*i+1000);
+        this->motors[i].setRotation(1024*i+1024);
     }
+
+    Serial.println("MotorController initialized");
 }
 
 void MotorController::update(){
@@ -23,45 +21,46 @@ void MotorController::update(){
         this->motors[i].update(now);
     };
 
-    // prepping data to send out
-    // unsigned long shiftData = 0b0;
-    int lastBit = 3;
-    // float motorz = this->motorCount/2;
-    // Serial.println(std::ceil(motorz));
-    // TODO CEIL function does not work, rounds 5/2 to 2.00
-    byte shiftData[3] = { 0b00000000, 0b00000000, 0b00000000 };
-    // if(MotorController::motorCount%2 == 1){
-    //     int lastBit = 4;
-    // };
+    // This section is all about preparing the bits for the shift registers
+    // For each motor it collects the high/low as a boolean and writes that on an 8-bit
+    // position somewhere on the shiftData array
+    // this function works from reverse to front so it does the last motor first, this is also
+    // the first data to send out, the shiftOut function has only support for bytes, hence there
+    // is no one long row of bits
+    int lastBit = -1;
+    //odd motor number, start at 0000
+    if(this->motorCount%2 == 1){
+        lastBit = 3;
+    }
+    
+    // creating a data array to send out in bytes, set all to 00000000
+    byte shiftData[(this->motorCount+1)/2] = { 0b00000000 };
+    std::fill(shiftData, shiftData+((this->motorCount+1)/2), 0b00000000);
+
     byte currentShift = 0;
-    // Serial.println("STARTING WRITING to bytearray");
+    // Loop per step per motor and append that to the shiftData
     for(int i = MotorController::motorCount-1; i >= 0; i--){
-        // Serial.print(i);
-        // Serial.println(" motor steps:");
         for(int j = 0; j < 4; j++){
             lastBit++;
-            // Serial.print(this->motors[i].getCurrentStep(j));
             bitWrite(shiftData[currentShift], lastBit, this->motors[i].getCurrentStep(j));
+            // We have filled this byte, move to next
             if(lastBit == 7){
                 lastBit = -1;
                 currentShift++;
-                // Serial.println("shift");
             }
         };
-        // Serial.println("next");
     };
 
+    // Shift register write action
     digitalWrite(17, LOW);
-    // CEIL DOES NOT WORK
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i < (this->motorCount+1)/2; i++){
         shiftOut(4, 16, LSBFIRST, shiftData[i]);
-        // Serial.println("s:");
-        // Serial.println(shiftData[i], BIN);
     }
     digitalWrite(17, HIGH);
-    // delay(400);
 }
 
 void MotorController::setSteps(int motorID, int stepCount){
-    //
+    if(motorID < 0 || motorID > MotorController::motorCount) return;
+    
+    this->motors[motorID].setRotation(stepCount);
 }

@@ -22,13 +22,19 @@ class MotorController{
     ////Pin connected to DS of 74HC595
     static const int dataPin = 4;
 
-    static const int motorCount = 5;
+    static const int motorCount = 11;
     Motor motors[motorCount] = {
         Motor(0),
         Motor(1),
         Motor(2),
         Motor(3),
-        Motor(4)
+        Motor(4),
+        Motor(5),
+        Motor(6),
+        Motor(7),
+        Motor(8),
+        Motor(9),
+        Motor(10),
     };
     
 };
