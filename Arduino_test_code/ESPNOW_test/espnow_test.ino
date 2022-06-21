@@ -1,8 +1,8 @@
 #include <esp_now.h>
-
+#include <WiFi.h>
 
 uint8_t receiverMAC[] = {0x0C, 0xBA, 0x15, 0xC3, 0x10, 0xAC};
-// uint8_t receiverMAC[] = {0x30, 0xC6, 0xF7, 0x04, 0x1F, 0x74};
+// // uint8_t receiverMAC[] = {0x30, 0xC6, 0xF7, 0x04, 0x1F, 0x74};
 
 typedef struct message_format {
     byte testValue = 0;
@@ -17,16 +17,17 @@ esp_now_peer_info_t connectedESPInfo;
 void setup(){
     Serial.begin(115200);
     
+    WiFi.mode(WIFI_STA);
     // Init ESP-NOW
-    if (esp_now_init() != ESP_OK) {
+    if (esp_now_init() != 0) {
         Serial.println("Error initializing ESP-NOW");
-        return;
+        // return;
     }
     
     esp_now_register_send_cb(onDataSent);
     esp_now_register_recv_cb(onDataReceive);
     
-    memcpy(connectedESPInfo.peer_addr, broadcastAddress, 6);
+    memcpy(connectedESPInfo.peer_addr, receiverMAC, 6);
     connectedESPInfo.channel = 0;  
     connectedESPInfo.encrypt = false;
 
@@ -34,15 +35,20 @@ void setup(){
     if (esp_now_add_peer(&connectedESPInfo) != ESP_OK){
         Serial.println("Failed to add peer");
     } else {
-        Serial.print("Added peer: ");
-        Serial.println(connectedESPInfo.peer_addr);
+        Serial.println("Added peer: ");
+        // Serial.println(connectedESPInfo.peer_addr);
     }
 
     Serial.println("Started program!");
 }
 
+// void loop(){
+//     delay(1000);
+//     Serial.println("hoi");
+// }
+
 void loop(){
-    esp_now_send(connectedESPInfo.peer_addr, dataToSend, sizeof(dataToSend));
+    esp_now_send(receiverMAC, (uint8_t *) &dataToSend, sizeof(dataToSend));
     Serial.println("Sent data to other esp...");
     delay(5000);
     dataToSend.testValue++;
