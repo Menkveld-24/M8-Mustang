@@ -8,9 +8,9 @@ MotorController::MotorController(){
     pinMode(MotorController::clockPin, OUTPUT);
     pinMode(MotorController::dataPin, OUTPUT);
 
-    // for(int i = 0; i < MotorController::motorCount; i++){
-    //     this->motors[i].setRotation(-STEPCOUNT*5);
-    // }
+    for(int i = 0; i < MotorController::motorCount; i++){
+        this->motors[i].setRotation(-STEPCOUNT*5);
+    }
 
     Serial.println("MotorController initialized");
 }
