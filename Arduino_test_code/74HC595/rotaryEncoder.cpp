@@ -3,8 +3,8 @@
 
 #define STEPS_PER_ROTATION 4000
 #define JOBCOUNT
-#define PINA 19
-#define PINB 21
+#define PINA 22
+#define PINB 23
 
 RotaryEncoder::RotaryEncoder(){
     // digitalWrite(PINA, HIGH);

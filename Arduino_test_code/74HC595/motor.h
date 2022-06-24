@@ -24,7 +24,7 @@ class Motor{
     // max height the motor can go in steps
     int maxHeight;
 
-    bool rotateClockWise = true;
+    bool moveUpwards = true;
     // delay to wait between steps
     static const unsigned long stepDelay = 60L * 1000L * 1000L / STEPCOUNT / RPM;
 
@@ -40,7 +40,7 @@ class Motor{
         {true, false, false, true}
     };
     // the current step we are at
-    int currentStep = 0;
+    int currentStep = 5*STEPCOUNT;
     // timestamp of last step taken
     unsigned long lastStep = 0;
     // steps left to step

@@ -13,9 +13,9 @@ Motor::Motor(byte motorID, byte switchPin, int maxHeight){
 // update the motor position 
 void Motor::update(unsigned long currentTime){
     // If we have steps left and waited long enough, step!
-    if(this->stepsLeft > 0 && (currentTime - this->lastStep >= this->stepDelay)){
+    if(this->stepsLeft != 0 && (currentTime - this->lastStep >= this->stepDelay)){
         // Checking rotation
-        if(this->rotateClockWise){
+        if(this->moveUpwards){
             this->currentStep++;
             this->stepsLeft--;
         } else {
@@ -25,8 +25,8 @@ void Motor::update(unsigned long currentTime){
         this->lastStep = currentTime;
 
         // Step number clipping
-        if(this->currentStep == 0) this->currentStep = STEPCOUNT;
-        else if(this->currentStep == STEPCOUNT) this->currentStep = 0;
+        // if(this->currentStep == 0) this->currentStep = STEPCOUNT;
+        // else if(this->currentStep == STEPCOUNT) this->currentStep = 0;
 
         // when we hit the switch, set our position back to 0
         if(digitalRead(this->switchPin)){
@@ -37,13 +37,19 @@ void Motor::update(unsigned long currentTime){
 
 // adding the amount of steps it needs to '-' is counterclockwise
 void Motor::setRotation(int steps){
-    if(steps > this->maxHeight-this->currentStep){
-        this->stepsLeft = this->maxHeight-this->currentStep;    
+    // we request more steps than we can 
+    // if(steps > this->maxHeight-this->currentStep){
+    //     this->stepsLeft = this->maxHeight-this->currentStep; 
+    //     this->moveUpwards =  true;  
+    //     // we request negative steps
+    if(steps < 0){
+        this->moveUpwards = false;
     } else {
-        this->stepsLeft = steps;
+        this->moveUpwards =  true;
     }
-    if(this->stepsLeft > 0) this->rotateClockWise = true;
-    else this->rotateClockWise = false;
+    this->stepsLeft = steps;
+    // if(this->stepsLeft > 0) this->moveUpwards = true;
+    // else this->moveUpwards = false;
 }
 
 // used by the motor controller to get the current step
