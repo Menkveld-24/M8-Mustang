@@ -2,7 +2,7 @@
 #include <Arduino.h>
 
 #define STEPS_PER_ROTATION 4000
-#define JOBCOUNT
+#define JOBCOUNT 30
 #define PINA 6
 #define PINB 6
 
@@ -26,7 +26,8 @@ void RotaryEncoder::update(){
 
 // Converting the step position to a job number
 int RotaryEncoder::getCurrentJobID(){
-    return this->position%JOBCOUNT;
+    this->position = map(this->position, 0, STEPS_PER_ROTATION, 0, JOBCOUNT)
+    return this->position;
 }
 
 // Calling this function after update, it returns -1 if the previous loop had the same job (no change)
