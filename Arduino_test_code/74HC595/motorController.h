@@ -24,17 +24,17 @@ class MotorController{
 
     static const int motorCount = 11;
     Motor motors[motorCount] = {
-        Motor(0),
-        Motor(1),
-        Motor(2),
-        Motor(3),
-        Motor(4),
-        Motor(5),
-        Motor(6),
-        Motor(7),
-        Motor(8),
-        Motor(9),
-        Motor(10),
+        Motor(0, 36, 4*STEPCOUNT),
+        Motor(1, 39, 4*STEPCOUNT),
+        Motor(2, 34, 4*STEPCOUNT),
+        Motor(3, 35, 4*STEPCOUNT),
+        Motor(4, 32, 4*STEPCOUNT),
+        Motor(5, 33, 4*STEPCOUNT),
+        Motor(6, 25, 4*STEPCOUNT),
+        Motor(7, 26, 4*STEPCOUNT),
+        Motor(8, 27, 4*STEPCOUNT),
+        Motor(9, 14, 4*STEPCOUNT),
+        Motor(10, 12, 4*STEPCOUNT),
     };
     
 };

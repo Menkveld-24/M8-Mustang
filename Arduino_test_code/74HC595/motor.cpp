@@ -1,17 +1,21 @@
 #include "motor.h"
 #include "Arduino.h"
 
-Motor::Motor(int motorID){
+Motor::Motor(byte motorID, byte switchPin, int maxHeight){
     Serial.println("motor init");
     this->motorID = motorID;
+    this->switchPin = switchPin;
+    this->maxHeight = maxHeight;
+
+    pinMode(this->switchPin, INPUT);
 }
 
 // update the motor position 
 void Motor::update(unsigned long currentTime){
     // If we have steps left and waited long enough, step!
-    if(this->stepsLeft > 0 && (currentTime - this->lastStep >= this->stepDelay)){
+    if(this->stepsLeft != 0 && (currentTime - this->lastStep >= this->stepDelay)){
         // Checking rotation
-        if(this->rotateClockWise){
+        if(this->moveUpwards){
             this->currentStep++;
             this->stepsLeft--;
         } else {
@@ -21,16 +25,31 @@ void Motor::update(unsigned long currentTime){
         this->lastStep = currentTime;
 
         // Step number clipping
-        if(this->currentStep == 0) this->currentStep = STEPCOUNT;
-        else if(this->currentStep == STEPCOUNT) this->currentStep = 0;
+        // if(this->currentStep == 0) this->currentStep = STEPCOUNT;
+        // else if(this->currentStep == STEPCOUNT) this->currentStep = 0;
+
+        // when we hit the switch, set our position back to 0
+        if(digitalRead(this->switchPin)){
+            stepsLeft = 0;
+        }
     }
 }
 
 // adding the amount of steps it needs to '-' is counterclockwise
 void Motor::setRotation(int steps){
+    // we request more steps than we can 
+    // if(steps > this->maxHeight-this->currentStep){
+    //     this->stepsLeft = this->maxHeight-this->currentStep; 
+    //     this->moveUpwards =  true;  
+    //     // we request negative steps
+    if(steps < 0){
+        this->moveUpwards = false;
+    } else {
+        this->moveUpwards =  true;
+    }
     this->stepsLeft = steps;
-    if(this->stepsLeft > 0) this->rotateClockWise = true;
-    else this->rotateClockWise = false;
+    // if(this->stepsLeft > 0) this->moveUpwards = true;
+    // else this->moveUpwards = false;
 }
 
 // used by the motor controller to get the current step
@@ -41,4 +60,14 @@ bool Motor::getCurrentStep(int pos){
 // we are not moving
 bool Motor::isIdle(){
     return this->stepsLeft == 0;
+}
+
+// retract the motor entirely
+void Motor::returnToHome(){
+    setRotation(-this->maxHeight);
+}
+
+// fully push out the motor
+void Motor::extendToTop(){
+    setRotation(this->maxHeight);
 }

@@ -1,5 +1,6 @@
 #include "motorController.h"
 #include "rotaryEncoder.h"
+#include "communicator.h"
 // Main program can keep the program state
 // 
 
@@ -8,7 +9,8 @@ RotaryEncoder encoder;
 Communicator communicator;
 
 void setup(){
-    Serial.begin(9600);
+    Serial.begin(115200);
+    communicator.initESP();
     Serial.print("Started program!");
 }
 
@@ -21,10 +23,10 @@ void loop(){
     checkForJobUpdates();
 }
 
-// check jor updates on the rotary encoder and relay this to the ring
+// // check jor updates on the rotary encoder and relay this to the ring
 void checkForJobUpdates(){
-    byte jobChange = encoder.listenForJobChange();
-    if(jobChange == -1) return;
+    // byte jobChange = encoder.listenForJobChange();
+    // if(jobChange == -1) return;
 
-    communicator.newJob(jobChange);
+    // communicator.newJob(jobChange);
 }

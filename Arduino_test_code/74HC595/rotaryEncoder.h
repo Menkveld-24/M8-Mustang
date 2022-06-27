@@ -6,13 +6,15 @@
 class RotaryEncoder{
     public:
         RotaryEncoder();
+        void update();
         int listenForJobChange();
 
     private:
         int getCurrentJobID();
         int position = 0;
         byte previousJob = 0;
-        bool previousState = false;
+        bool previousStateA = false;
+        bool previousStateB = false;
 };
 
 

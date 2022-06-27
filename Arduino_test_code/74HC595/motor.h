@@ -9,15 +9,22 @@
 
 class Motor{
   public:
-    Motor(int motorID);
+    Motor(byte motorID, byte switchPin, int maxHeight);
     void update(unsigned long currentTime);
     void setRotation(int rot);
     bool getCurrentStep(int pos);
     bool isIdle();
+    void returnToHome();
+    void extendToTop();
 
   private:
-    int motorID;
-    bool rotateClockWise = true;
+    byte motorID;
+    // pin used to sense the down position at
+    byte switchPin;
+    // max height the motor can go in steps
+    int maxHeight;
+
+    bool moveUpwards = true;
     // delay to wait between steps
     static const unsigned long stepDelay = 60L * 1000L * 1000L / STEPCOUNT / RPM;
 
@@ -33,7 +40,7 @@ class Motor{
         {true, false, false, true}
     };
     // the current step we are at
-    int currentStep = 0;
+    int currentStep = 5*STEPCOUNT;
     // timestamp of last step taken
     unsigned long lastStep = 0;
     // steps left to step
