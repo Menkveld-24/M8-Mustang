@@ -2,7 +2,7 @@
 #define _MOTOR_H_
 
 #define STEPCOUNT 2048
-#define RPM 10
+#define RPM 15
 
 //superclass
 #include <Arduino.h>
@@ -16,6 +16,7 @@ class Motor{
     bool isIdle();
     void returnToHome();
     void extendToTop();
+    void extendToHalf();
 
   private:
     byte motorID;

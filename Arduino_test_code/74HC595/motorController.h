@@ -10,6 +10,7 @@ class MotorController{
     MotorController();
     void update();
     void setSteps(int motorID, int stepCount);
+    void newJob(byte jobID);
     // void getCurrentStep();
 
     
@@ -24,17 +25,50 @@ class MotorController{
 
     static const int motorCount = 11;
     Motor motors[motorCount] = {
-        Motor(0, 36, 4*STEPCOUNT),
-        Motor(1, 39, 4*STEPCOUNT),
-        Motor(2, 34, 4*STEPCOUNT),
-        Motor(3, 35, 4*STEPCOUNT),
-        Motor(4, 32, 4*STEPCOUNT),
-        Motor(5, 33, 4*STEPCOUNT),
-        Motor(6, 25, 4*STEPCOUNT),
-        Motor(7, 26, 4*STEPCOUNT),
-        Motor(8, 27, 4*STEPCOUNT),
-        Motor(9, 14, 4*STEPCOUNT),
+        Motor(0, 36, 1*STEPCOUNT),
+        Motor(1, 39, 1*STEPCOUNT),
+        Motor(2, 34, 1*STEPCOUNT),
+        Motor(3, 35, 1*STEPCOUNT),
+        Motor(4, 32, 1*STEPCOUNT),
+        Motor(5, 33, 1*STEPCOUNT),
+        Motor(6, 25, 1*STEPCOUNT),
+        Motor(7, 26, 1*STEPCOUNT),
+        Motor(8, 27, 1*STEPCOUNT),
+        Motor(9, 14, 1*STEPCOUNT),
         Motor(10, 12, 4*STEPCOUNT),
+    };
+
+    const byte treeSalaries[30] = {
+        55,
+        50,
+        20,
+        10,
+        20,
+        25,
+        40,
+        55,
+        10,
+        50,
+        105,
+        60,
+        50,
+        35,
+        80,
+        25,
+        25,
+        110,
+        55,
+        90,
+        15,
+        60,
+        60,
+        25,
+        30,
+        35,
+        35,
+        55,
+        40,
+        45
     };
     
 };

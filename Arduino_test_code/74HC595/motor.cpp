@@ -64,10 +64,20 @@ bool Motor::isIdle(){
 
 // retract the motor entirely
 void Motor::returnToHome(){
+    Serial.print("Motor to home: ");
+    Serial.println(this->motorID);
     setRotation(-this->maxHeight);
 }
 
 // fully push out the motor
 void Motor::extendToTop(){
+    Serial.print("Motor to top: ");
+    Serial.println(this->motorID);
     setRotation(this->maxHeight);
+}
+
+void Motor::extendToHalf(){
+    Serial.print("Motor to half: ");
+    Serial.println(this->motorID);
+    setRotation(static_cast <byte> (this->maxHeight/2));
 }

@@ -12,6 +12,8 @@ void setup(){
     Serial.begin(115200);
     communicator.initESP();
     Serial.print("Started program!");
+    // attachInterrupt(digitalPinToInterrupt(PINA), rotaryInterruptA, CHANGE);
+    // attachInterrupt(digitalPinToInterrupt(PINB), rotaryInterruptB, CHANGE);
 }
 
 
@@ -25,8 +27,18 @@ void loop(){
 
 // // check jor updates on the rotary encoder and relay this to the ring
 void checkForJobUpdates(){
-    // byte jobChange = encoder.listenForJobChange();
-    // if(jobChange == -1) return;
+    int jobChange = encoder.listenForJobChange();
+    if(jobChange == -1) return;
 
-    // communicator.newJob(jobChange);
+    Serial.println(jobChange);
+    communicator.newJob(jobChange);
+    controller.newJob(jobChange);
 }
+
+// void rotaryInterruptA(){
+//     encoder.interruptA();
+// }
+
+// void rotaryInterruptB(){
+//     encoder.interruptB();
+// }
