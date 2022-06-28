@@ -5,7 +5,7 @@
 #include <deque>
 
 // Defining the pin 
-#define LED_PIN     26
+#define LED_PIN     13
 #define BUTTON_PIN  21
 
 // Number of LEDs
