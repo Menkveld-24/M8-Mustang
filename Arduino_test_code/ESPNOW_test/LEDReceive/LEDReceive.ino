@@ -2,6 +2,7 @@
 #include <esp_now.h>
 #include <WiFi.h>
 #include <FastLED.h>
+#include <deque>
 
 // Defining the pin 
 #define LED_PIN     26
@@ -9,6 +10,8 @@
 
 // Number of LEDs
 #define NUM_LEDS    392
+
+using namespace std;
 
 // LEDs variables
 CRGBArray<NUM_LEDS> leds;
@@ -40,6 +43,9 @@ message_format receivedData;
 // Connecting to other ESP
 esp_now_peer_info_t connectedESPInfo;
 
+// Saving state for dequing 
+deque<byte> currentStates;
+
 void setup() {
   Serial.begin(115200);
   WiFi.mode(WIFI_STA);
@@ -49,13 +55,14 @@ void setup() {
     Serial.println("Error initializing ESP-NOW");
     // return;
   }
+
+   // naming the receiving variable
   esp_now_register_recv_cb(onDataReceive);
 
+ // Add peer
   memcpy(connectedESPInfo.peer_addr, senderMAC, 6);
   connectedESPInfo.channel = 0;
   connectedESPInfo.encrypt = false;
-
-  // Add peer
   if (esp_now_add_peer(&connectedESPInfo) != ESP_OK) {
     Serial.println("Failed to add peer");
   } else {
@@ -66,23 +73,51 @@ void setup() {
   pinMode(LED_PIN, OUTPUT);
   pinMode(BUTTON_PIN, INPUT_PULLUP);
   FastLED.addLeds<NEOPIXEL, LED_PIN>(leds, NUM_LEDS);
+
+  // Defining the deque 
+
 }
 
+byte counter = 0;
 
 void loop() {
+  normalState();
   // LEDReceiver(24);
   // Serial.println("l");
+  delay(1000);
+  counter++;
+  if(counter == 30) counter = 0;
+  receivedData.jobID = counter;
+  receivedData.isPressed = true;
+  
   if(received){
     received = false;
     LEDReceiver(receivedData.jobID);
-  }
+  } 
 
   if (receivedData.isPressed){
     receivedData.isPressed = false;
+    currentStates.push_back(receivedData.jobID);
+    if(currentStates.size() >= 6) currentStates.pop_front();
+
+    Serial.println("Current queue");
+    for(int i =0; i< currentStates.size(); i++){
+      Serial.println(currentStates[i]);
+    }
+
     saveState(receivedData.jobID);
+    // deque<byte> mydeque;
+
+
+    
   }
 }
 
+void normalState(){
+  for (int i =0; i<393; i++){
+    leds[i] = CRGB::Black;
+  }
+}
 
 void onDataReceive(const uint8_t * mac, const uint8_t *incomingData, int len) {
   Serial.println("Received data!");
