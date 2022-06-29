@@ -1,5 +1,5 @@
 #include <espnow.h>
-#include <WiFi.h>
+#include <ESP8266WiFi.h>
 
 byte loopNr = 0;
 // Message from sender 
@@ -8,7 +8,7 @@ typedef struct message_format {
   bool isPressed = false;
 } message_format;
 
-const uint8_t receiverMAC[6] = {0x30, 0xC6, 0xF7, 0x04, 0x1F, 0x74};
+uint8_t receiverMAC[6] = {0x30, 0xC6, 0xF7, 0x04, 0x1F, 0x74};
 
 // Defining the message from sender with receivedData variable 
 message_format dataToSend;
@@ -20,16 +20,19 @@ void setup() {
     WiFi.mode(WIFI_STA);
     Serial.begin(115200);
     if (esp_now_init() != 0) Serial.println("Error initializing ESP-NOW");
+    esp_now_set_self_role(ESP_NOW_ROLE_CONTROLLER);
+    // esp_now_add_peer(receiverMAC, ESP_NOW_ROLE_SLAVE, 1, NULL, 0);
 
     esp_now_register_send_cb(onDataSent);
 
+    Serial.println("Setup complete");
     // memcpy(connectedESPInfo.peer_addr, receiverMAC, 6);
     // connectedESPInfo.channel = 0;  
     // connectedESPInfo.encrypt = false;
 
     // Add peer        
-    if (esp_now_add_peer(&connectedESPInfo) != ESP_OK) Serial.println("Failed to add peer");
-    else Serial.println("Added peer: ");
+    // if (esp_now_add_peer(&connectedESPInfo) != ESP_OK) Serial.println("Failed to add peer");
+    // else Serial.println("Added peer: ");
 }
 
 void loop() {
@@ -45,7 +48,13 @@ void loop() {
 }
 
 
-void onDataSent(const uint8_t *mac_addr, esp_now_send_status_t status){
+void onDataSent(uint8_t *mac_addr, uint8_t sendStatus){
     Serial.print("\r\nLast Packet Send Status:\t");
-    Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
+    // Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
+    if (sendStatus == 0){
+      Serial.println("Delivery success");
+    }
+    else{
+      Serial.println("Delivery fail");
+    }
 }
