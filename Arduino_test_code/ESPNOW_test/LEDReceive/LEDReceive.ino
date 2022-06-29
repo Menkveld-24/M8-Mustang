@@ -84,15 +84,11 @@ void loop() {
   normalState();
   // LEDReceiver(24);
   // Serial.println("l");
-  delay(1000);
-  counter++;
-  if(counter == 30) counter = 0;
-  receivedData.jobID = counter;
   receivedData.isPressed = true;
   
   if(received){
     received = false;
-    LEDReceiver(receivedData.jobID);
+    turnOnLEDS(receivedData.jobID);
   } 
 
   if (receivedData.isPressed){
@@ -105,16 +101,13 @@ void loop() {
       Serial.println(currentStates[i]);
     }
 
-    saveState(receivedData.jobID);
+    turnOnLEDS(receivedData.jobID);
     // deque<byte> mydeque;
-
-
-    
   }
 }
 
 void normalState(){
-  for (int i =0; i<393; i++){
+  for (int i =0; i<NUM_LEDS; i++){
     leds[i] = CRGB::Black;
   }
 }
@@ -131,496 +124,164 @@ void onDataReceive(const uint8_t * mac, const uint8_t *incomingData, int len) {
   // stressStateLED(receivedData.lastState);
 }
 
-void saveState(byte jobID){
+void turnOnLEDSstate(int startLED, int endLED, byte distressState){
+  for (int i = startLED; i <= endLED; i++) {
+    leds[i] = CHSV (stresslevelColor[distressState][0],stresslevelColor[distressState][1],stresslevelColor[distressState][2]);
+  }
+}
+
+void turnOnLEDS(byte jobID){
   switch (jobID) {
     case 0:
-      for (int i = 15; i <= 20; i++) {
-        leds[i] = CHSV (stresslevelColor[1][0],stresslevelColor[1][1],stresslevelColor[1][2]);
-      }
-      for (int i = 230; i <=234; i++){
-        leds[i] = CHSV (stresslevelColor[1][0],stresslevelColor[1][1],stresslevelColor[1][2]);
-      }
+    //Nurse
+      turnOnLEDSstate(15, 20, 1);
+      turnOnLEDSstate(230, 234, 1);
       break;
     case 1:
-      for (int i = 8; i <= 13; i++) {
-        leds[i] = CHSV (stresslevelColor[0][0], stresslevelColor[0][1], stresslevelColor[0][2]);
-      }
-      for (int i = 224; i <=228; i++){
-        leds[i] = CHSV (stresslevelColor[0][0], stresslevelColor[0][1], stresslevelColor[0][2]);
-      }
+    // Software Developer
+      turnOnLEDSstate(8, 13, 0);
+      turnOnLEDSstate(224,228,0);
       break;
     case 2:
-      for (int i = 0; i <= 5; i++) {
-        leds[i] = CHSV (stresslevelColor[0][0], stresslevelColor[0][1], stresslevelColor[0][2]);
-      }
-      for (int i = 218; i<=222; i++){
-        leds[i] = CHSV (stresslevelColor[0][0], stresslevelColor[0][1], stresslevelColor[0][2]);
-      }
+    //Dental Technician
+      turnOnLEDSstate(0, 5, 0);
+      turnOnLEDSstate(218, 222, 0);
       break;
     case 3:
-      for (int i = 210; i <= 215; i++) {
-        leds [i] = CHSV (stresslevelColor[3][0], stresslevelColor[3][1], stresslevelColor[3][2]);
-      }
-      for (int i = 387; i<=392; i++){
-        leds [i] = CHSV (stresslevelColor[3][0], stresslevelColor[3][1], stresslevelColor[3][2]);
-      }
+    //Taxi Driver
+      turnOnLEDSstate(210, 215, 3);
+      turnOnLEDSstate(387,392,3);
       break;
     case 4:
-      for (int i = 203; i <= 208; i++) {
-        leds [i] = CHSV (stresslevelColor[3][0], stresslevelColor[3][1], stresslevelColor[3][2]);
-      }
-      for (int i = 381; i <= 386; i++) {
-        leds [i] = CHSV (stresslevelColor[3][0], stresslevelColor[3][1], stresslevelColor[3][2]);
-      } 
+    //Newspaper reporter
+      turnOnLEDSstate(203, 208, 3);
+      turnOnLEDSstate(381, 386, 3);
       break;
     case 5:
-      for (int i = 196; i <= 201; i++) {
-        leds[i] = CHSV (stresslevelColor[2][0], stresslevelColor[2][1], stresslevelColor[2][2]);
-      }
-      for (int i = 376; i <= 380; i++) {
-        leds[i] = CHSV (stresslevelColor[2][0], stresslevelColor[2][1], stresslevelColor[2][2]);
-      }
+    //Chef
+      turnOnLEDSstate(196, 201, 2);
+      turnOnLEDSstate(376, 380, 2);
       break;
     case 6:
-      for (int i = 189; i <= 194; i++) {
-        leds[i] = CHSV (stresslevelColor[0][0], stresslevelColor[0][1], stresslevelColor[0][2]);
-      }
-      for (int i = 370; i <= 374; i++) {
-        leds[i] = CHSV (stresslevelColor[0][0], stresslevelColor[0][1], stresslevelColor[0][2]);
-      }
+    //University professor
+      turnOnLEDSstate(189, 194, 0);
+      turnOnLEDSstate(370, 374, 0);
       break;
     case 7:
-      for (int i = 182; i <= 186; i++) {
-        leds[i] = CHSV (stresslevelColor[1][0],stresslevelColor[1][1],stresslevelColor[1][2]);
-      }
-      for (int i = 364; i <= 369; i++) {
-        leds[i] = CHSV (stresslevelColor[1][0],stresslevelColor[1][1],stresslevelColor[1][2]);
-      }
+    //Aerospace engineer
+      turnOnLEDSstate(182, 186, 1);
+      turnOnLEDSstate(364, 369, 1);
       break;
     case 8:
-      for (int i = 174; i <= 179; i++) {
-        leds[i] = CHSV (stresslevelColor[0][0], stresslevelColor[0][1], stresslevelColor[0][2]);
-      }
-      for (int i = 358; i <= 362; i++) {
-        leds[i] = CHSV (stresslevelColor[0][0], stresslevelColor[0][1], stresslevelColor[0][2]);
-      }
+    //Hair styilist
+      turnOnLEDSstate(174, 179, 0);
+      turnOnLEDSstate(358, 362, 0);
       break;
     case 9:
-      for (int i = 167; i <= 172; i++) {
-        leds[i] = CHSV (stresslevelColor[1][0],stresslevelColor[1][1],stresslevelColor[1][2]);
-      }
-      for (int i = 352; i <= 357; i++) {
-        leds[i] = CHSV (stresslevelColor[1][0],stresslevelColor[1][1],stresslevelColor[1][2]);
-      }
+    //Electrical engineer
+      turnOnLEDSstate(167, 172, 1);
+      turnOnLEDSstate(352, 357, 1);
       break;
     case 10:
-      for (int i = 160; i <= 165; i++) {
-        leds[i] = CHSV (stresslevelColor[2][0], stresslevelColor[2][1], stresslevelColor[2][2]);
-      }
-      for (int i = 346; i <= 351; i++) {
-        leds[i] = CHSV (stresslevelColor[2][0], stresslevelColor[2][1], stresslevelColor[2][2]);
-      }
+    //Surgeon
+      turnOnLEDSstate(160, 165, 2);
+      turnOnLEDSstate(346, 351, 2);
       break;
     case 11:
-      for (int i = 153; i <= 158; i++) {
-        leds[i] = CHSV (stresslevelColor[1][0],stresslevelColor[1][1],stresslevelColor[1][2]);
-      }
-      for (int i = 340; i <= 345; i++) {
-        leds[i] = CHSV (stresslevelColor[1][0],stresslevelColor[1][1],stresslevelColor[1][2]);
-      }
+    //Pharmacist
+      turnOnLEDSstate(153,158, 1);
+      turnOnLEDSstate(340, 345, 1);
       break;
     case 12:
-      for (int i = 147; i <= 151; i++) {
-        leds[i] = CHSV (stresslevelColor[2][0], stresslevelColor[2][1], stresslevelColor[2][2]);
-      }
-      for (int i = 335; i <= 339; i++) {
-        leds[i] = CHSV (stresslevelColor[2][0], stresslevelColor[2][1], stresslevelColor[2][2]);
-      }
+    //Social Media Manager
+      turnOnLEDSstate(147, 151, 2);
+      turnOnLEDSstate(335, 339, 2);
       break;
     case 13:
-      for (int i = 139; i <= 144; i++) {
-        leds[i] = CHSV (stresslevelColor[1][0],stresslevelColor[1][1],stresslevelColor[1][2]);
-      }
-      for (int i = 329; i <= 333; i++) {
-        leds[i] = CHSV (stresslevelColor[1][0],stresslevelColor[1][1],stresslevelColor[1][2]);
-      }
+    //Accountant
+      turnOnLEDSstate(139, 144, 1);
+      turnOnLEDSstate(329, 333, 1);
       break;
     case 14:
-      for (int i = 132; i <= 137; i++) {
-        leds[i] = CHSV (stresslevelColor[1][0],stresslevelColor[1][1],stresslevelColor[1][2]);
-      }
-      for (int i = 323; i <= 327; i++) {
-        leds[i] = CHSV (stresslevelColor[1][0],stresslevelColor[1][1],stresslevelColor[1][2]);
-      }
+    //Dentist
+      turnOnLEDSstate(132, 137, 1);
+      turnOnLEDSstate(323, 327, 1);
       break;
     case 15:
-      for (int i = 125; i <= 130; i++) {
-        leds[i] = CHSV (stresslevelColor[2][0], stresslevelColor[2][1], stresslevelColor[2][2]);
-      }
-      for (int i = 317; i <= 321; i++) {
-        leds[i] = CHSV (stresslevelColor[2][0], stresslevelColor[2][1], stresslevelColor[2][2]);
-      }
+    //Tailor
+      turnOnLEDSstate(125, 130, 2);
+      turnOnLEDSstate(317, 321, 2);
       break;
     case 16:
-      for (int i = 118; i <= 123; i++) {
-        leds[i] = CHSV (stresslevelColor[1][0],stresslevelColor[1][1],stresslevelColor[1][2]);
-      }
-      for (int i = 311; i <= 316; i++) {
-        leds[i] = CHSV (stresslevelColor[1][0],stresslevelColor[1][1],stresslevelColor[1][2]);
-      }
+    //Plumber
+      turnOnLEDSstate(118, 123, 1);
+      turnOnLEDSstate(311, 316, 1);
       break;
     case 17:
-      for (int i = 110; i <= 115; i++) {
-        leds [i] = CHSV (stresslevelColor[4][0], stresslevelColor[4][1], stresslevelColor[4][2]);
-      }
-      for (int i = 305; i <= 310; i++) {
-        leds [i] = CHSV (stresslevelColor[4][0], stresslevelColor[4][1], stresslevelColor[4][2]);
-      }
+    //Military General
+      turnOnLEDSstate(110, 115, 4);
+      turnOnLEDSstate(305, 310, 4);
       break;
     case 18:
-      for (int i = 102; i <= 107; i++) {
-        leds [i] = CHSV (stresslevelColor[4][0], stresslevelColor[4][1], stresslevelColor[4][2]);
-      }
-      for (int i = 299; i <= 304; i++) {
-        leds [i] = CHSV (stresslevelColor[4][0], stresslevelColor[4][1], stresslevelColor[4][2]);
-      }
+    //Pilot
+      turnOnLEDSstate(102, 107, 4);
+      turnOnLEDSstate(299, 304, 4);
       break;
     case 19:
-      for (int i = 95; i <= 100; i++) {
-        leds [i] = CHSV (stresslevelColor[3][0], stresslevelColor[3][1], stresslevelColor[3][2]);
-      }
-      for (int i = 294; i <= 298; i++) {
-       leds [i] = CHSV (stresslevelColor[3][0], stresslevelColor[3][1], stresslevelColor[3][2]);
-      }
+    //Corporate exectuive
+      turnOnLEDSstate(95, 100, 3);
+      turnOnLEDSstate(294, 298, 3);
       break;
     case 20:
-      for (int i = 88; i <= 93; i++) {
-        leds[i] = CHSV (stresslevelColor[2][0], stresslevelColor[2][1], stresslevelColor[2][2]);
-      }
-      for (int i = 288; i <= 292; i++) {
-        leds[i] = CHSV (stresslevelColor[2][0], stresslevelColor[2][1], stresslevelColor[2][2]);
-      }
+    //Construction Laborer
+      turnOnLEDSstate(88, 93, 2);
+      turnOnLEDSstate(288, 292, 2);
       break;
     case 21:
-      for (int i = 81; i <= 86; i++) {
-        leds[i] = CHSV (stresslevelColor[2][0], stresslevelColor[2][1], stresslevelColor[2][2]);
-      }
-      for (int i = 282; i <= 286; i++) {
-        leds[i] = CHSV (stresslevelColor[2][0], stresslevelColor[2][1], stresslevelColor[2][2]);
-      }
+    //Attorney
+      turnOnLEDSstate(81, 86, 2);
+      turnOnLEDSstate(282, 286, 2);
       break;
     case 22:
-      for (int i = 73; i <= 78; i++) {
-        leds[i] = CHSV (stresslevelColor[1][0],stresslevelColor[1][1],stresslevelColor[1][2]);
-      }
-      for (int i = 276; i <= 281; i++) {
-        leds[i] = CHSV (stresslevelColor[1][0],stresslevelColor[1][1],stresslevelColor[1][2]);
-      }
+    //Physicist
+      turnOnLEDSstate(73, 78, 1);
+      turnOnLEDSstate(276, 281, 1);
       break;
     case 23:
-      for (int i = 65; i <= 70; i++) {
-        leds [i] = CHSV (stresslevelColor[4][0], stresslevelColor[4][1], stresslevelColor[4][2]);
-      }
-      for (int i = 270; i <= 275; i++) {
-        leds [i] = CHSV (stresslevelColor[4][0], stresslevelColor[4][1], stresslevelColor[4][2]);
-      }
+    //Firefighter
+      turnOnLEDSstate(65, 70, 4);
+      turnOnLEDSstate(270,275, 4);
       break;
     case 24:
-      for (int i = 58; i <= 62; i++) {
-        leds [i] = CHSV (stresslevelColor[3][0], stresslevelColor[3][1], stresslevelColor[3][2]);
-      }
-      for (int i = 265; i <= 269; i++) {
-        leds [i] = CHSV (stresslevelColor[3][0], stresslevelColor[3][1], stresslevelColor[3][2]);
-      }
+    //Police officer
+      turnOnLEDSstate(58, 62, 3);
+      turnOnLEDSstate(265, 269, 3);
       break;
     case 25:
-      for (int i = 50; i <= 55; i++) {
-        leds[i] = CHSV (stresslevelColor[2][0], stresslevelColor[2][1], stresslevelColor[2][2]);
-      }
-      for (int i = 259; i <= 263; i++) {
-        leds[i] = CHSV (stresslevelColor[2][0], stresslevelColor[2][1], stresslevelColor[2][2]);
-      }
+    //Fashion Designer
+      turnOnLEDSstate(50, 55, 2);
+      turnOnLEDSstate(259,263, 2);
       break;
     case 26:
-      for (int i = 43; i <= 48; i++) {
-        leds[i] = CHSV (stresslevelColor[1][0],stresslevelColor[1][1],stresslevelColor[1][2]);
-      }
-      for (int i = 253; i <= 257; i++) {
-        leds[i] = CHSV (stresslevelColor[1][0],stresslevelColor[1][1],stresslevelColor[1][2]);
-      }
+    //Industrial Designer
+      turnOnLEDSstate(43, 48, 1);
+      turnOnLEDSstate(253, 257, 1);
       break;
     case 27:
-      for (int i = 35; i <= 40; i++) {
-        leds[i] = CHSV (stresslevelColor[2][0], stresslevelColor[2][1], stresslevelColor[2][2]);
-      }
-      for (int i = 247; i <= 251; i++) {
-        leds[i] = CHSV (stresslevelColor[2][0], stresslevelColor[2][1], stresslevelColor[2][2]);
-      }
+    //Nuclear engineer
+      turnOnLEDSstate(35, 40, 2);
+      turnOnLEDSstate(247, 251, 2);
       break;
     case 28:
-      for (int i = 29; i <= 33; i++) {
-        leds[i] = CHSV (stresslevelColor[2][0], stresslevelColor[2][1], stresslevelColor[2][2]);
-      }
-      for (int i = 241; i <= 246; i++) {
-        leds[i] = CHSV (stresslevelColor[2][0], stresslevelColor[2][1], stresslevelColor[2][2]);
-      }
+    //Computer programmer
+      turnOnLEDSstate(29, 33, 2);
+      turnOnLEDSstate(241, 246, 2);
       break;
     case 29:
-      for (int i = 22; i <= 27; i++) {
-       leds[i] = CHSV (stresslevelColor[1][0],stresslevelColor[1][1],stresslevelColor[1][2]);
-      }
-      for (int i = 236; i <= 240; i++) {
-        leds[i] = CHSV (stresslevelColor[1][0],stresslevelColor[1][1],stresslevelColor[1][2]);
-      }
+    //Veterenarian
+      turnOnLEDSstate(22, 27, 1);
+      turnOnLEDSstate(236, 240 ,1);
       break;
     }
     FastLED.show();
 }
-
-void LEDReceiver(byte jobID) {
-  Serial.println(jobID);
-  switch (jobID) {
-    case 0:
-      for (int i = 15; i <= 20; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 230; i <=234; i++){
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 1:
-      for (int i = 8; i <= 13; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 224; i <=228; i++){
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 2:
-      for (int i = 0; i <= 5; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 218; i<=222; i++){
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 3:
-      for (int i = 210; i <= 215; i++) {
-        leds [i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 387; i<=392; i++){
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 4:
-      for (int i = 203; i <= 208; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 381; i <= 386; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      } 
-      break;
-    case 5:
-      for (int i = 196; i <= 201; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 376; i <= 380; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 6:
-      for (int i = 189; i <= 194; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 370; i <= 374; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 7:
-      for (int i = 182; i <= 186; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 364; i <= 369; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 8:
-      for (int i = 174; i <= 179; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 358; i <= 362; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 9:
-      for (int i = 167; i <= 172; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 352; i <= 357; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 10:
-      for (int i = 160; i <= 165; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 346; i <= 351; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 11:
-      for (int i = 153; i <= 158; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 340; i <= 345; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 12:
-      for (int i = 147; i <= 151; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 335; i <= 339; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 13:
-      for (int i = 139; i <= 144; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 329; i <= 333; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 14:
-      for (int i = 132; i <= 137; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 323; i <= 327; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 15:
-      for (int i = 125; i <= 130; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 317; i <= 321; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 16:
-      for (int i = 118; i <= 123; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 311; i <= 316; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 17:
-      for (int i = 110; i <= 115; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 305; i <= 310; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 18:
-      for (int i = 102; i <= 107; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 299; i <= 304; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 19:
-      for (int i = 95; i <= 100; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 294; i <= 298; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 20:
-      for (int i = 88; i <= 93; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 288; i <= 292; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 21:
-      for (int i = 81; i <= 86; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 282; i <= 286; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 22:
-      for (int i = 73; i <= 78; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 276; i <= 281; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 23:
-      for (int i = 65; i <= 70; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 270; i <= 275; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 24:
-      for (int i = 58; i <= 62; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 265; i <= 269; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 25:
-      for (int i = 50; i <= 55; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 259; i <= 263; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 26:
-      for (int i = 43; i <= 48; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 253; i <= 257; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 27:
-      for (int i = 35; i <= 40; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 247; i <= 251; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 28:
-      for (int i = 29; i <= 33; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 241; i <= 246; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    case 29:
-      for (int i = 22; i <= 27; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      for (int i = 236; i <= 240; i++) {
-        leds[i] = CHSV (color, saturation, dim);
-      }
-      break;
-    }
-    FastLED.show();
-}
-
