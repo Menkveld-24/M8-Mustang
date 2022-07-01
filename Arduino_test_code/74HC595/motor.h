@@ -17,6 +17,7 @@ class Motor{
     void returnToHome();
     void extendToTop();
     void extendToHalf();
+    void updateMotorDelay(byte transitionDuration);
 
   private:
     byte motorID;
@@ -27,7 +28,7 @@ class Motor{
 
     bool moveUpwards = true;
     // delay to wait between steps
-    static const unsigned long stepDelay = 60L * 1000L * 1000L / STEPCOUNT / RPM;
+    unsigned long stepDelay = 60L * 1000L * 1000L / STEPCOUNT / RPM;
 
 // * Step C0 C1 C2 C3
 // *    1  1  1  0  0  

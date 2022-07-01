@@ -37,12 +37,12 @@ void RotaryEncoder::update(){
             || (!this->previousStateA && this->previousStateB && !readA && !readB) //01 -> 00
             || (this->previousStateA && this->previousStateB && !readA && readB) //11 -> 01
             || (this->previousStateA && !this->previousStateB && readA && readB)){ //10 -> 11
-                this->position++; //to right
+                this->position--; //to right
         } else if ((!this->previousStateA && !this->previousStateB && !readA && readB) // 00-> 01
             || (!this->previousStateA && this->previousStateB && readA && readB) //01 -> 11
             || (this->previousStateA && this->previousStateB && readA && !readB) //11 -> 10
             || (this->previousStateA && !this->previousStateB && !readA && !readB)){ //10 -> 00
-                this->position--;
+                this->position++;
         }
         if(this->position < 0) this->position = (JOBCOUNT+1)*STEPS_PER_ROTATION;
         else if(this->position > (1+JOBCOUNT)*STEPS_PER_ROTATION) this->position = 0;
@@ -56,8 +56,8 @@ int RotaryEncoder::getCurrentJobID(){
     int currentPosition = abs(this->position);
     // if(this->position < 0) currentPosition += JOBCOUNT*STEPS_PER_ROTATION;
     // currentPosition = currentPosition%(JOBCOUNT*STEPS_PER_ROTATION);
-    // Serial.print(currentPosition);
-    // Serial.print(" : ");
+    // // Serial.print(currentPosition);
+    // // Serial.print(" : ");
     byte currentjob = map(currentPosition, 0, (JOBCOUNT+1)*STEPS_PER_ROTATION, 0, JOBCOUNT);
     if(currentjob == 30) currentjob = 0;
     this->previousPositions.push_front(currentjob);
@@ -70,8 +70,8 @@ int RotaryEncoder::getCurrentJobID(){
     byte mostFrequent = -1;
     byte maxCount = 0;
     for(int i = 0; i < frequencies.size(); i++){
-        // Serial.print(i);
-        // Serial.println(frequencies[i]);
+        // // Serial.print(i);
+        // // Serial.println(frequencies[i]);
         if(frequencies[i] > maxCount){
             maxCount = frequencies[i];
             mostFrequent = i;
@@ -87,12 +87,12 @@ int RotaryEncoder::listenForJobChange(){
     byte lastJob = this->previousJob;
     byte currentJob = this->getCurrentJobID();
     this->previousJob = currentJob;
-    // Serial.print(lastJob);
-    // Serial.println(currentJob);
+    // // Serial.print(lastJob);
+    // // Serial.println(currentJob);
     if(lastJob != currentJob){
-        Serial.print(this->position);
-        Serial.print(this->getCurrentJobID());
-        Serial.println(this->previousJob);
+        // Serial.print(this->position);
+        // Serial.print(this->getCurrentJobID());
+        // Serial.println(this->previousJob);
         return currentJob;
     }
     return -1;

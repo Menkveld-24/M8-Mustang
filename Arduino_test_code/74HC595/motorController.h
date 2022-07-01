@@ -11,6 +11,8 @@ class MotorController{
     void update();
     void setSteps(int motorID, int stepCount);
     void newJob(byte jobID);
+    void newJobSelected(byte newJobID, byte nextLevel);
+    void returnAllToIdle();
     // void getCurrentStep();
 
     
@@ -24,18 +26,19 @@ class MotorController{
     static const int dataPin = 4;
 
     static const int motorCount = 11;
+    // 36, 39, 34, 35, 32, 33, 25, 26, 27, 14, 12
     Motor motors[motorCount] = {
-        Motor(0, 36, 1*STEPCOUNT),
-        Motor(1, 39, 1*STEPCOUNT),
-        Motor(2, 34, 1*STEPCOUNT),
-        Motor(3, 35, 1*STEPCOUNT),
-        Motor(4, 32, 1*STEPCOUNT),
-        Motor(5, 33, 1*STEPCOUNT),
-        Motor(6, 25, 1*STEPCOUNT),
-        Motor(7, 26, 1*STEPCOUNT),
-        Motor(8, 27, 1*STEPCOUNT),
-        Motor(9, 14, 1*STEPCOUNT),
-        Motor(10, 12, 4*STEPCOUNT),
+        Motor(0, 39, 1*STEPCOUNT),
+        Motor(1, 36, 1*STEPCOUNT),
+        Motor(2, 26, 1*STEPCOUNT),
+        Motor(3, 33, 1*STEPCOUNT),
+        Motor(4, 13, 1*STEPCOUNT),
+        Motor(5, 18, 1*STEPCOUNT),
+        Motor(6, 35, 1*STEPCOUNT),
+        Motor(7, 14, 1*STEPCOUNT),
+        Motor(8, 32, 1*STEPCOUNT),
+        Motor(9, 27, 1*STEPCOUNT),
+        Motor(10, 34, 1*STEPCOUNT),
     };
 
     const byte treeSalaries[30] = {

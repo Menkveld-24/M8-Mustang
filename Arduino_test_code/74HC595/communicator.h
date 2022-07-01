@@ -10,19 +10,20 @@ class Communicator{
         void update();
         void initESP();
         void newJob(byte newJobID);
+        void newJobSelected(byte newJobID, byte nextLevel);
+        void updateUnity(byte jobID);
         static void onDataSent(const uint8_t *mac_addr, esp_now_send_status_t status);
         static void onDataReceive(const uint8_t * mac, const uint8_t *incomingData, int len);
+        void updateRing(byte jobID, bool buttonPressed); 
 
     private:
-        void updateUnity(byte jobID);
-        void updateRing(byte jobID); 
 
         const uint8_t receiverMAC[6] = {0x30, 0xC6, 0xF7, 0x04, 0x1F, 0x74};
         // const uint8_t receiverMAC[6] = {0x0C, 0xB8, 0x15, 0xC3, 0x10, 0xAC};
 
         typedef struct message_format {
-            int jobID = 0;
-            bool booleanTest = false;
+            byte jobID = 0;
+            bool buttonPressed = false;
         } message_format;
 
         message_format receivedData;

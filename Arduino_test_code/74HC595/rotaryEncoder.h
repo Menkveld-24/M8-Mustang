@@ -6,7 +6,7 @@
 #include <deque>
 #include <unordered_map>
 
-#define STEPS_PER_ROTATION 40
+#define STEPS_PER_ROTATION 30
 #define JOBCOUNT 30
 #define PINA 22
 #define PINB 23
@@ -17,9 +17,9 @@ class RotaryEncoder{
         RotaryEncoder();
         void update();
         int listenForJobChange();
+        int getCurrentJobID();
 
     private:
-        int getCurrentJobID();
         int position = 0;
         std::deque <int> previousPositions;
         byte previousJob = 0;
